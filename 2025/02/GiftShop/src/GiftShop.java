@@ -18,13 +18,27 @@ public class GiftShop {
             }
     }
 
+    /* Now, an ID is invalid if it is made only of some sequence of digits repeated at least twice. So, 12341234 (1234 two times), 123123123 (123 three times), 1212121212 (12 five times), and 1111111 (1 seven times) are all invalid IDs. */
+
     private boolean isInvalidID(long id) {
         String idStr = String.valueOf(id);
-        if (idStr.length() % 2 != 0) return false;
+        // Try all possible pattern lengths from 1 to half the string length
+        for (int patternLength = 1; patternLength <= idStr.length() / 2; patternLength++) {
+            String pattern = idStr.substring(0, patternLength);
 
-        String firstHalf = idStr.substring(0, idStr.length() / 2);
-        String secondHalf = idStr.substring(idStr.length() / 2);
-        return firstHalf.equals(secondHalf);
+            // Check if the entire string can be formed by repeating this pattern
+            StringBuilder repeated = new StringBuilder();
+            while (repeated.length() < idStr.length()) {
+                repeated.append(pattern);
+            }
+
+            // If the repeated pattern matches the original string and repeats at least twice
+            if (repeated.toString().equals(idStr) && idStr.length() / patternLength >= 2) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public long getSumOfInvalidIDs() {
