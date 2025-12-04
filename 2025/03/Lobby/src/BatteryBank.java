@@ -1,5 +1,3 @@
-import javax.swing.*;
-
 public class BatteryBank {
     private final String batteries;
 
@@ -12,17 +10,34 @@ public class BatteryBank {
     }
 
     public int getLargestJoltage() {
-        int largestJoltage = 0;
+        int maxNumberOfBatteriesToTurnOn = 2;
+        int startIndex = 0;
 
-        for (char firstDigit : batteries.toCharArray()) {
-            for (char secondDigit : batteries.substring(batteries.indexOf(firstDigit) + 1).toCharArray()) {
-                int joltage = (firstDigit - '0') * 10 + (secondDigit - '0');
-                if (joltage > largestJoltage) {
-                    largestJoltage = joltage;
-                }
-            }
+        StringBuilder batteriesTurnedOn = new StringBuilder(maxNumberOfBatteriesToTurnOn);
+
+        for (int countOfBatteriesTurnedOn = 0; countOfBatteriesTurnedOn < maxNumberOfBatteriesToTurnOn; countOfBatteriesTurnedOn++) {
+            String remainingBatteries = batteries.substring(startIndex);
+            int batteryToTurnOn = batteryToTurnOn(remainingBatteries, maxNumberOfBatteriesToTurnOn - countOfBatteriesTurnedOn);
+            batteriesTurnedOn.append(remainingBatteries.charAt(batteryToTurnOn));
+            startIndex = batteryToTurnOn + 1;
         }
+        return Integer.parseInt(batteriesTurnedOn.toString());
 
-        return largestJoltage;
+    }
+
+    private int batteryToTurnOn(String remainingBatteries, int additionalBatteriesNeeded) {
+        int highestJoltage = 0;
+        int batteryPosition = 0;
+        int highestJoltagePosition = 0;
+
+        while (batteryPosition <= remainingBatteries.length() - additionalBatteriesNeeded) {
+            int joltage = remainingBatteries.charAt(batteryPosition) - '0';
+            if (joltage > highestJoltage) {
+                highestJoltage = joltage;
+                highestJoltagePosition = batteryPosition;
+            }
+            batteryPosition++;
+        }
+        return highestJoltagePosition;
     }
 }
