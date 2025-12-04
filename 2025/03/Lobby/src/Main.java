@@ -1,11 +1,9 @@
 import java.nio.file.Files;
 import java.util.List;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Generating Maximum Output Joltage");
+        System.out.println("Turning on battery banks...");
         PowerBank powerBank = new PowerBank();
         try {
             java.nio.file.Path path = java.nio.file.Paths.get("resources/input.txt");
